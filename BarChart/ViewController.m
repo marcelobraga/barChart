@@ -18,18 +18,24 @@
 {
     [super viewDidLoad];
     [self.drawerView initChart];
+    
+    
+    self.drawerView.title = @"FINANCIAMENTOS";
 
-    self.drawerView.barDetail.title = @"2012";
-    self.drawerView.barDetail.color = [UIColor orangeColor];
-    self.drawerView.barDetail.value = 700;
+    self.drawerView.barDetail.title = @"Aprovados";
+    self.drawerView.barDetail.color = [UIColor magentaColor];
+    self.drawerView.barDetail.value = 500;
+    self.drawerView.barDetail.subValue = 700;
+    self.drawerView.barDetail.subColor = [UIColor purpleColor];
     [self.drawerView setBar];
     
 
-    self.drawerView.barDetail.title = @"2016";
-    self.drawerView.barDetail.color = [UIColor purpleColor];
+    self.drawerView.barDetail.title = @"Reprovados";
+    self.drawerView.barDetail.color = [UIColor magentaColor];
     self.drawerView.barDetail.value = 312;
+    self.drawerView.barDetail.subValue = 212;
+    self.drawerView.barDetail.subColor = [UIColor purpleColor];
     [self.drawerView setBar];
-    
     
     [self.drawerView drawChart];
 }

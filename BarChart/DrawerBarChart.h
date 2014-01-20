@@ -19,6 +19,10 @@
 @property (nonatomic, assign) int fontSize;
 @property (nonatomic, strong) BarDetail * barDetail;
 @property (nonatomic, assign) BOOL showBorder;
+@property (nonatomic, assign) BOOL rotate45Degress;
+@property (nonatomic, assign) BOOL rotate90Degress;
+@property (nonatomic, assign) BOOL abortRotate;
+@property (nonatomic, assign) NSString * title;
 
 -(void) drawChart;
 -(void) initChart;

@@ -183,44 +183,109 @@
     for (BarDetail * barDetail in arrayBar) {
 
         double heightBar = barDetail.value * heightDefinition;
+        double heightSubBar = 0;
+        if (barDetail.subValue != 0) {
+            heightSubBar = barDetail.subValue * heightDefinition;
+        }
         
         UIView * bar = [UIView new];
         CGRect frameBar = bar.frame;
         frameBar.origin.x = originX;
         frameBar.origin.y = frameHorizontal.origin.y - heightBar;
         frameBar.size.width = widthBar - 10;
-        frameBar.size.height = heightBar;
+        frameBar.size.height = heightBar + 1;
         bar.frame = frameBar;
         bar.backgroundColor = barDetail.color;
         [self addSubview:bar];
+        bar.layer.borderWidth = 1;
         if (self.showBorder) {
-            bar.layer.borderWidth = 1;
             bar.layer.borderColor = self.dimensionColor.CGColor;
+        } else {
+            bar.layer.borderColor = self.backgroundColor.CGColor;
         }
+        
+        if (barDetail.subValue != 0) {
+            UIView * subBar = [UIView new];
+            CGRect frameSubBar = subBar.frame;
+            frameSubBar.origin.x = originX + 5;
+            frameSubBar.origin.y = frameHorizontal.origin.y - heightSubBar ;
+            frameSubBar.size.width = widthBar - 10;
+            frameSubBar.size.height = heightSubBar + 1;
+            subBar.frame = frameSubBar;
+            subBar.backgroundColor = barDetail.subColor;
+            [self addSubview:subBar];
+            subBar.layer.borderWidth = 1;
+            subBar.layer.borderColor = self.backgroundColor.CGColor;
+            
+            frameHorizontal.size.width += 5;
+            limiteHorizontalView.frame = frameHorizontal;
+            
+        }
+        
         
         UILabel * labelTitle = [UILabel new];
         labelTitle.text = barDetail.title;
         [labelTitle setFont:[UIFont boldSystemFontOfSize:self.fontSize]];
-        [labelTitle setTransform:CGAffineTransformMakeRotation(-M_PI / 2)];
+        if (self.rotate45Degress) {
+            [labelTitle setTransform:CGAffineTransformMakeRotation(-M_PI_4)];
+            [labelTitle setTextAlignment:NSTextAlignmentRight];
+        } else if (self.rotate90Degress) {
+            [labelTitle setTransform:CGAffineTransformMakeRotation(-M_PI_2)];
+            [labelTitle setTextAlignment:NSTextAlignmentRight];
+        } else {
+            [labelTitle setTextAlignment:NSTextAlignmentCenter];
+        }
         CGRect frameTitle = labelTitle.frame;
         frameTitle.origin.x = originX;
-        frameTitle.origin.y = frameBar.origin.y + frameBar.size.height + 5 ;
-        frameTitle.size.width = widthBar - 10;
-        frameTitle.size.height = 50;
+        frameTitle.origin.y = frameBar.origin.y + frameBar.size.height   ;
+        if (!self.rotate45Degress) {
+            frameTitle.origin.y += 5;
+        }
+        frameTitle.size.width = widthBar ;
+        if (self.abortRotate) {
+            frameTitle.size.height = 25;
+        } else if (self.rotate90Degress) {
+            frameTitle.size.height = 25;
+        } else if (self.rotate45Degress) {
+            frameTitle.size.height = 25;
+        }
         labelTitle.frame = frameTitle;
         labelTitle.backgroundColor = [UIColor clearColor];
-        [labelTitle setTextAlignment:NSTextAlignmentRight];
-        labelTitle.textColor = self.dimensionColor;
+        if (barDetail.titleColor) {
+            labelTitle.textColor = barDetail.titleColor;
+        } else {
+            labelTitle.textColor = self.dimensionColor;
+        }
         [self addSubview:labelTitle];
         
         
         originX += widthBar ;
     }
     
+    if (self.title) {
+        UILabel * labelTitle = [UILabel new];
+        [labelTitle setFont:[UIFont boldSystemFontOfSize:10]];
+        CGRect frameTitle = labelTitle.frame;
+        frameTitle.origin.x = MARGIN_HORIZONTAL;
+        frameTitle.origin.y = 0;
+        frameTitle.size.height = 30;
+        frameTitle.size.width = self.frame.size.width - MARGIN_HORIZONTAL * 2;
+        labelTitle.frame = frameTitle;
+        labelTitle.text = self.title;
+        labelTitle.textColor = self.dimensionColor;
+        [labelTitle setTextAlignment:NSTextAlignmentCenter];
+        labelTitle.backgroundColor = [UIColor clearColor];
+        [self addSubview:labelTitle];
+    }
+    
+    
     [self bringSubviewToFront:lineViewTop];
     [self bringSubviewToFront:lineViewTop2];
     [self bringSubviewToFront:lineViewMiddle];
     [self bringSubviewToFront:lineViewBottom];
+    
+    [self bringSubviewToFront:limitVerticalView];
+    [self bringSubviewToFront:limiteHorizontalView];
     
 }
 
@@ -229,6 +294,7 @@
     self.barDetail = [BarDetail new];
     arrayBar = [NSMutableArray new];
     self.showBorder = NO;
+    self.abortRotate = YES;
 }
 
 -(void) setBar {
@@ -236,14 +302,45 @@
     self.barDetail = [BarDetail new];
 }
 
+
 -(void) getMaxValue {
     int maxValue = 0;
     for (BarDetail * barDetail in arrayBar) {
         if (barDetail.value > maxValue){
             maxValue = barDetail.value;
         }
+        if (barDetail.subValue > maxValue){
+            maxValue = barDetail.subValue;
+        }
     }
     self.maxValue = maxValue;
+}
+
+
+-(void) setAbortRotate:(BOOL)abortRotate {
+    if (abortRotate) {
+        _rotate45Degress = NO;
+        _rotate90Degress = NO;
+        _abortRotate = YES;
+    }
+}
+
+
+-(void) setRotate45Degress:(BOOL)rotate45Degress {
+    if (rotate45Degress) {
+        _abortRotate = NO;
+        _rotate90Degress = NO;
+        _rotate45Degress = YES;
+    }
+}
+
+
+-(void) setRotate90Degress:(BOOL)rotate90Degress {
+    if (rotate90Degress) {
+        _abortRotate = NO;
+        _rotate45Degress = NO;
+        _rotate90Degress = YES;
+    }
 }
 
 
