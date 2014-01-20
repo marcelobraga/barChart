@@ -25,8 +25,6 @@
     self.drawerView.barDetail.title = @"Aprovados";
     self.drawerView.barDetail.color = [UIColor magentaColor];
     self.drawerView.barDetail.value = 500;
-    self.drawerView.barDetail.subValue = 700;
-    self.drawerView.barDetail.subColor = [UIColor purpleColor];
     [self.drawerView setBar];
     
 
@@ -36,6 +34,13 @@
     self.drawerView.barDetail.subValue = 212;
     self.drawerView.barDetail.subColor = [UIColor purpleColor];
     [self.drawerView setBar];
+
+    self.drawerView.barDetail.title = @"Reprovados";
+    self.drawerView.barDetail.color = [UIColor magentaColor];
+    self.drawerView.barDetail.value = 312;
+    [self.drawerView setBar];
+    
+    
     
     [self.drawerView drawChart];
 }

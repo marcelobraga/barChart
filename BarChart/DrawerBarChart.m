@@ -225,9 +225,9 @@
         
         UILabel * labelTitle = [UILabel new];
         labelTitle.text = barDetail.title;
-        [labelTitle setFont:[UIFont boldSystemFontOfSize:self.fontSize]];
+        [labelTitle setFont:[UIFont systemFontOfSize:self.fontSize]];
         if (self.rotate45Degress) {
-            [labelTitle setTransform:CGAffineTransformMakeRotation(-M_PI_4)];
+            [labelTitle setTransform:CGAffineTransformMakeRotation(M_PI_4)];
             [labelTitle setTextAlignment:NSTextAlignmentRight];
         } else if (self.rotate90Degress) {
             [labelTitle setTransform:CGAffineTransformMakeRotation(-M_PI_2)];
@@ -238,10 +238,8 @@
         CGRect frameTitle = labelTitle.frame;
         frameTitle.origin.x = originX;
         frameTitle.origin.y = frameBar.origin.y + frameBar.size.height   ;
-        if (!self.rotate45Degress) {
-            frameTitle.origin.y += 5;
-        }
-        frameTitle.size.width = widthBar ;
+        frameTitle.origin.y += 5;
+        frameTitle.size.width = widthBar;
         if (self.abortRotate) {
             frameTitle.size.height = 25;
         } else if (self.rotate90Degress) {
