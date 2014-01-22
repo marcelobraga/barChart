@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "DrawerBarChart.h"
 
-@interface ViewController : UIViewController {
+@interface ViewController : UIViewController <DrawerBarChartDelegate> {
     
 }
 

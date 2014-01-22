@@ -179,7 +179,7 @@
     int originX = frameLineTop.origin.x + 10;
     int widthBar = limiteHorizontalView.frame.size.width / arrayBar.count;
     
-    
+    int index = 0;
     for (BarDetail * barDetail in arrayBar) {
 
         double heightBar = barDetail.value * heightDefinition;
@@ -220,8 +220,20 @@
             frameHorizontal.size.width += 5;
             limiteHorizontalView.frame = frameHorizontal;
             
+            UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+            btn.frame = frameBar;
+            btn.tag = index;
+            [btn addTarget:self action:@selector(clickBar:) forControlEvents:UIControlEventTouchUpInside];
+            [self addSubview:btn];
+            
         }
         
+        
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        btn.frame = frameBar;
+        btn.tag = index;
+        [btn addTarget:self action:@selector(clickBar:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:btn];
         
         UILabel * labelTitle = [UILabel new];
         labelTitle.text = barDetail.title;
@@ -258,6 +270,7 @@
         
         
         originX += widthBar ;
+        index++;
     }
     
     if (self.title) {
@@ -354,6 +367,14 @@
     self.minValue = minValue;
 }
 
+
+-(void) clickBar : (UIButton *) btn {
+
+    if((self.delegate) && ([self.delegate respondsToSelector:@selector(didSelectBar: )])) {
+        [self.delegate didSelectBar:[arrayBar objectAtIndex:btn.tag]];
+    }
+    
+}
 
 
 @end
