@@ -370,7 +370,7 @@
             maxValue = barDetail.subValue;
         }
     }
-    self.maxValue = maxValue;
+    self.maxValue = maxValue * 1.1;
 }
 
 

@@ -33,6 +33,7 @@
     self.drawerView.barDetail.title = @"Two";
     self.drawerView.barDetail.color = [UIColor blueColor];
     self.drawerView.barDetail.value = 312;
+    self.drawerView.barDetail.subValue = 80;
     [self.drawerView setBar];
     
     
