@@ -36,6 +36,8 @@
     self.drawerView.barDetail.subValue = 80;
     [self.drawerView setBar];
     
+    self.drawerView.rotate90Degress = YES;
+    
     
     [self.drawerView drawChart];
 }

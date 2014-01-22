@@ -268,7 +268,7 @@
         labelTitle.text = barDetail.title;
         [labelTitle setFont:[UIFont boldSystemFontOfSize:self.fontSize]];
         if (self.rotate45Degress) {
-            [labelTitle setTransform:CGAffineTransformMakeRotation(M_PI_4)];
+            [labelTitle setTransform:CGAffineTransformMakeRotation(-M_PI_4)];
             [labelTitle setTextAlignment:NSTextAlignmentRight];
         } else if (self.rotate90Degress) {
             [labelTitle setTransform:CGAffineTransformMakeRotation(-M_PI_2)];
@@ -278,7 +278,7 @@
         }
         CGRect frameTitle = labelTitle.frame;
         frameTitle.origin.x = originX;
-        frameTitle.origin.y = frameBar.origin.y + frameBar.size.height   ;
+        frameTitle.origin.y = frameBar.origin.y + frameBar.size.height + 5   ;
         frameTitle.origin.y += 5;
         frameTitle.size.width = widthBar;
         if (self.abortRotate) {
@@ -342,6 +342,12 @@
         self.layer.borderColor = self.lineColor.CGColor;
         self.layer.borderWidth = 1;
     }
+    
+    self.layer.shadowColor    = [UIColor blackColor].CGColor;
+    self.layer.shadowOffset   = CGSizeMake(0,2);
+    self.layer.shadowOpacity  = 0.9;
+    self.layer.shadowRadius   = 2;
+    
 
 }
 
