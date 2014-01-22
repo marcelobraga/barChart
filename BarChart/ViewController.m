@@ -20,20 +20,20 @@
     [self.drawerView initChart];
     self.drawerView.delegate = self;
     
-    self.drawerView.title = @"GRAFICO BARRAS";
+    self.drawerView.masterColor = [UIColor brownColor]; //Use this to create a color template from entire chart. Another color will be ignored
+    
+    self.drawerView.title = @"BAR CHART TITLE";
 
-    self.drawerView.barDetail.title = @"Um";
-    self.drawerView.barDetail.color = [UIColor magentaColor];
+    self.drawerView.barDetail.title = @"One";
+    self.drawerView.barDetail.color = [UIColor blueColor];
     self.drawerView.barDetail.value = 500;
     self.drawerView.barDetail.subValue = 300;
-    self.drawerView.barDetail.subColor = [UIColor purpleColor];
     [self.drawerView setBar];
     
-    self.drawerView.barDetail.title = @"Dois";
-    self.drawerView.barDetail.color = [UIColor magentaColor];
+    self.drawerView.barDetail.title = @"Two";
+    self.drawerView.barDetail.color = [UIColor blueColor];
     self.drawerView.barDetail.value = 312;
     [self.drawerView setBar];
-    
     
     
     [self.drawerView drawChart];

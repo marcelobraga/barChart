@@ -41,10 +41,9 @@
 
 -(void) drawChart {
 
-    if (!self.dimensionColor) {
-        self.dimensionColor = [UIColor blackColor];
+    if (!self.lineColor) {
+        self.lineColor = [UIColor blackColor];
     }
-    
     
     [self getMaxValue];
     [self getMinValue];
@@ -59,14 +58,14 @@
     frameVertical.origin.x = MARGIN_HORIZONTAL;
     frameVertical.origin.y = MARGIN_VERTICAL;
     frameVertical.size.height = self.frame.size.height - MARGIN_VERTICAL * 2;
-    limitVerticalView.backgroundColor = self.dimensionColor;
+    limitVerticalView.backgroundColor = self.lineColor;
     limitVerticalView.frame = frameVertical;
     
     frameHorizontal.size.width = self.frame.size.width - MARGIN_HORIZONTAL * 2;
     frameHorizontal.size.height = 1;
     frameHorizontal.origin.x = MARGIN_HORIZONTAL;
     frameHorizontal.origin.y = frameVertical.origin.y + frameVertical.size.height;
-    limiteHorizontalView.backgroundColor = self.dimensionColor;
+    limiteHorizontalView.backgroundColor = self.lineColor;
     limiteHorizontalView.frame = frameHorizontal;
     
     
@@ -128,7 +127,7 @@
     }
     UILabel * labelMax = [UILabel new];
     [labelMax setFont:[UIFont systemFontOfSize:self.fontSize]];
-    labelMax.textColor = self.dimensionColor;
+    labelMax.textColor = self.lineColor;
     CGRect frameLabelMax = labelMax.frame;
     frameLabelMax.origin.x = 2;
     frameLabelMax.origin.y = frameLineTop.origin.y - 15;
@@ -140,7 +139,7 @@
 
     UILabel * labelMax2 = [UILabel new];
     [labelMax2 setFont:[UIFont systemFontOfSize:self.fontSize]];
-    labelMax2.textColor = self.dimensionColor;
+    labelMax2.textColor = self.lineColor;
     CGRect frameLabelMax2 = labelMax2.frame;
     frameLabelMax2.origin.x = 2;
     frameLabelMax2.origin.y = frameLineTop2.origin.y - 15;
@@ -152,7 +151,7 @@
     
     UILabel * labelAverage = [UILabel new];
     [labelAverage setFont:[UIFont systemFontOfSize:self.fontSize]];
-    labelAverage.textColor = self.dimensionColor;
+    labelAverage.textColor = self.lineColor;
     CGRect frameLabelAverage = labelAverage.frame;
     frameLabelAverage.origin.x = 2;
     frameLabelAverage.origin.y = frameLineMiddle.origin.y - 15;
@@ -164,7 +163,7 @@
 
     UILabel * labelBottom = [UILabel new];
     [labelBottom setFont:[UIFont systemFontOfSize:self.fontSize]];
-    labelBottom.textColor = self.dimensionColor;
+    labelBottom.textColor = self.lineColor;
     CGRect frameLabelBottom = labelBottom.frame;
     frameLabelBottom.origin.x = 2;
     frameLabelBottom.origin.y = frameLineBottom.origin.y - 15;
@@ -195,12 +194,24 @@
         frameBar.size.width = widthBar - 10;
         frameBar.size.height = heightBar + 1;
         bar.frame = frameBar;
-        bar.backgroundColor = barDetail.color;
-        [self addSubview:bar];
-        bar.layer.borderWidth = 1;
-        if (self.showBorder) {
-            bar.layer.borderColor = self.dimensionColor.CGColor;
+        if (self.masterColor) {
+            barDetail.color = self.masterColor;
+        }
+        if (self.showGradient) {
+            CAGradientLayer *gradient = [CAGradientLayer layer];
+            gradient.frame = bar.bounds;
+            gradient.colors = [NSArray arrayWithObjects:(id)barDetail.color.CGColor, (id)[self darkerColorForColor:barDetail.color].CGColor, nil];
+            [bar.layer insertSublayer:gradient atIndex:0];
         } else {
+            bar.backgroundColor = barDetail.color;
+        }
+        
+        [self addSubview:bar];
+        if (self.showBorder) {
+            bar.layer.borderWidth = 1;
+            bar.layer.borderColor = self.lineColor.CGColor;
+        } else {
+            bar.layer.borderWidth = 0;
             bar.layer.borderColor = self.backgroundColor.CGColor;
         }
         
@@ -212,11 +223,29 @@
             frameSubBar.size.width = widthBar - 10;
             frameSubBar.size.height = heightSubBar + 1;
             subBar.frame = frameSubBar;
-            subBar.backgroundColor = barDetail.subColor;
-            [self addSubview:subBar];
-            subBar.layer.borderWidth = 1;
-            subBar.layer.borderColor = self.backgroundColor.CGColor;
+            if (!barDetail.subColor) {
+                barDetail.subColor = [self lighterColorForColor:barDetail.color];
+            }
             
+            if (self.showGradient) {
+                CAGradientLayer *gradient = [CAGradientLayer layer];
+                gradient.frame = subBar.bounds;
+                gradient.colors = [NSArray arrayWithObjects:(id)barDetail.subColor.CGColor, (id)[self darkerColorForColor:barDetail.subColor].CGColor, nil];
+                [subBar.layer insertSublayer:gradient atIndex:0];
+            } else {
+                subBar.backgroundColor = barDetail.subColor;
+            }
+            
+            
+            subBar.layer.borderWidth = 1;
+            if (self.showBorder) {
+                subBar.layer.borderColor = self.lineColor.CGColor;
+            } else {
+                subBar.layer.borderColor = [self lighterColorForColor:barDetail.subColor].CGColor;
+            }
+
+            [self addSubview:subBar];
+
             frameHorizontal.size.width += 5;
             limiteHorizontalView.frame = frameHorizontal;
             
@@ -237,7 +266,7 @@
         
         UILabel * labelTitle = [UILabel new];
         labelTitle.text = barDetail.title;
-        [labelTitle setFont:[UIFont systemFontOfSize:self.fontSize]];
+        [labelTitle setFont:[UIFont boldSystemFontOfSize:self.fontSize]];
         if (self.rotate45Degress) {
             [labelTitle setTransform:CGAffineTransformMakeRotation(M_PI_4)];
             [labelTitle setTextAlignment:NSTextAlignmentRight];
@@ -264,7 +293,7 @@
         if (barDetail.titleColor) {
             labelTitle.textColor = barDetail.titleColor;
         } else {
-            labelTitle.textColor = self.dimensionColor;
+            labelTitle.textColor = self.lineColor;
         }
         [self addSubview:labelTitle];
         
@@ -283,7 +312,7 @@
         frameTitle.size.width = self.frame.size.width - MARGIN_HORIZONTAL * 2;
         labelTitle.frame = frameTitle;
         labelTitle.text = self.title;
-        labelTitle.textColor = self.dimensionColor;
+        labelTitle.textColor = self.lineColor;
         [labelTitle setTextAlignment:NSTextAlignmentCenter];
         labelTitle.backgroundColor = [UIColor clearColor];
         [self addSubview:labelTitle];
@@ -298,6 +327,22 @@
     [self bringSubviewToFront:limitVerticalView];
     [self bringSubviewToFront:limiteHorizontalView];
     
+    if (self.masterColor) {
+        self.backgroundColor = self.masterColor;
+    }
+    
+    if (self.showGradient) {
+        CAGradientLayer *gradient = [CAGradientLayer layer];
+        gradient.frame = self.bounds;
+        gradient.colors = [NSArray arrayWithObjects: (id)[self lighterColorForColor:self.backgroundColor].CGColor, (id)self.backgroundColor.CGColor, nil];
+        [self.layer insertSublayer:gradient atIndex:0];
+    }
+    
+    if (self.showBorder || self.showGradient) {
+        self.layer.borderColor = self.lineColor.CGColor;
+        self.layer.borderWidth = 1;
+    }
+
 }
 
 
@@ -306,6 +351,7 @@
     arrayBar = [NSMutableArray new];
     self.showBorder = NO;
     self.abortRotate = YES;
+    self.showGradient = YES;
 }
 
 -(void) setBar {
@@ -377,4 +423,26 @@
 }
 
 
+- (UIColor *)darkerColorForColor:(UIColor *)c
+{
+    CGFloat r, g, b, a;
+    if ([c getRed:&r green:&g blue:&b alpha:&a])
+        return [UIColor colorWithRed:MAX(r - 0.9, 0.0)
+                               green:MAX(g - 0.9, 0.0)
+                                blue:MAX(b - 0.9, 0.0)
+                               alpha:a];
+    return nil;
+}
+
+
+- (UIColor *)lighterColorForColor:(UIColor *)c
+{
+    CGFloat r, g, b, a;
+    if ([c getRed:&r green:&g blue:&b alpha:&a])
+        return [UIColor colorWithRed:MIN(r + 0.6, 1.0)
+                               green:MIN(g + 0.6, 1.0)
+                                blue:MIN(b + 0.6, 1.0)
+                               alpha:a];
+    return nil;
+}
 @end
