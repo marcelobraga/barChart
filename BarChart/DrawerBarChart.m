@@ -343,10 +343,12 @@
         self.layer.borderWidth = 1;
     }
     
-    self.layer.shadowColor    = [UIColor blackColor].CGColor;
-    self.layer.shadowOffset   = CGSizeMake(0,2);
-    self.layer.shadowOpacity  = 0.9;
-    self.layer.shadowRadius   = 2;
+    if (self.showShadow) {
+        self.layer.shadowColor    = [UIColor blackColor].CGColor;
+        self.layer.shadowOffset   = CGSizeMake(0,2);
+        self.layer.shadowOpacity  = 0.9;
+        self.layer.shadowRadius   = 2;
+    }
     
 
 }
@@ -358,6 +360,7 @@
     self.showBorder = NO;
     self.abortRotate = YES;
     self.showGradient = YES;
+    self.showShadow = NO;
 }
 
 -(void) setBar {

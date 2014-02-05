@@ -31,6 +31,7 @@
 @property (nonatomic, assign) int minValue;
 @property (nonatomic, assign) int fontSize;
 @property (nonatomic, strong) BarDetail * barDetail;
+@property (nonatomic, assign) BOOL showShadow;
 @property (nonatomic, assign) BOOL showBorder;
 @property (nonatomic, assign) BOOL showGradient;
 @property (nonatomic, assign) BOOL rotate45Degress;
