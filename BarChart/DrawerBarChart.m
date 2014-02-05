@@ -58,6 +58,7 @@
     frameVertical.origin.x = MARGIN_HORIZONTAL;
     frameVertical.origin.y = MARGIN_VERTICAL;
     frameVertical.size.height = self.frame.size.height - MARGIN_VERTICAL * 2;
+    frameVertical.size.height -= 5;
     limitVerticalView.backgroundColor = self.lineColor;
     limitVerticalView.frame = frameVertical;
     
@@ -349,8 +350,6 @@
         self.layer.shadowOpacity  = 0.9;
         self.layer.shadowRadius   = 2;
     }
-    
-
 }
 
 
