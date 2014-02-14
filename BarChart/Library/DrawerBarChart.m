@@ -406,6 +406,12 @@
         }
     }
     self.maxValue = maxValue * 1.1;
+    if (maxValue < 10) {
+        self.maxValue = maxValue + 1;
+    } else {
+        self.maxValue = maxValue * 1.1;
+    }
+    
 }
 
 
