@@ -149,7 +149,24 @@
     frameLabelMax2.size.height = 30;
     labelMax2.frame = frameLabelMax2;
     labelMax2.text = [NSString stringWithFormat:@"%i", self.maxValue - (self.maxValue / 4)];
-    [self addSubview:labelMax2];
+    if (![labelMax2.text isEqualToString:labelMax.text]) {
+        [self addSubview:labelMax2];
+    }
+    
+    UILabel * labelBottom = [UILabel new];
+    [labelBottom setFont:[UIFont systemFontOfSize:self.fontSize]];
+    labelBottom.textColor = self.lineColor;
+    CGRect frameLabelBottom = labelBottom.frame;
+    frameLabelBottom.origin.x = 2;
+    frameLabelBottom.origin.y = frameLineBottom.origin.y - 15;
+    frameLabelBottom.size.width = 40;
+    frameLabelBottom.size.height = 30;
+    labelBottom.frame = frameLabelBottom;
+    labelBottom.text = [NSString stringWithFormat:@"%i", self.maxValue / 4];
+    if (self.maxValue / 4 > 0) {
+        [self addSubview:labelBottom];
+    }
+    
     
     UILabel * labelAverage = [UILabel new];
     [labelAverage setFont:[UIFont systemFontOfSize:self.fontSize]];
@@ -161,19 +178,22 @@
     frameLabelAverage.size.height = 30;
     labelAverage.frame = frameLabelAverage;
     labelAverage.text = [NSString stringWithFormat:@"%i", self.maxValue / 2];
-    [self addSubview:labelAverage];
-
-    UILabel * labelBottom = [UILabel new];
-    [labelBottom setFont:[UIFont systemFontOfSize:self.fontSize]];
-    labelBottom.textColor = self.lineColor;
-    CGRect frameLabelBottom = labelBottom.frame;
-    frameLabelBottom.origin.x = 2;
-    frameLabelBottom.origin.y = frameLineBottom.origin.y - 15;
-    frameLabelBottom.size.width = 40;
-    frameLabelBottom.size.height = 30;
-    labelBottom.frame = frameLabelBottom;
-    labelBottom.text = [NSString stringWithFormat:@"%i", self.maxValue / 4];
-    [self addSubview:labelBottom];
+    if (![labelAverage.text isEqualToString:labelBottom.text]) {
+        [self addSubview:labelAverage];
+    }
+    
+    
+    UILabel * labelZero = [UILabel new];
+    [labelZero setFont:[UIFont systemFontOfSize:self.fontSize]];
+    labelZero.textColor = self.lineColor;
+    CGRect frameLabelZero = labelZero.frame;
+    frameLabelZero.origin.x = 2;
+    frameLabelZero.origin.y = frameHorizontal.origin.y - 15;
+    frameLabelZero.size.width = 40;
+    frameLabelZero.size.height = 30;
+    labelZero.frame = frameLabelZero;
+    labelZero.text = @"0";
+    [self addSubview:labelZero];
     
     
     double heightDefinition = limitVerticalView.frame.size.height / self.maxValue;
