@@ -19,4 +19,5 @@
 @property (nonatomic, assign) UIColor * subColor;
 @property (nonatomic, assign) double subValue;
 
+
 @end

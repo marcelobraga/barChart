@@ -23,6 +23,7 @@
     self.drawerView.masterColor = [UIColor brownColor]; //Use this to create a color template from entire chart. Another color will be ignored
     
     self.drawerView.title = @"BAR CHART TITLE";
+//    self.drawerView.barSize = 20; // Use this to define the bar width. By default, the bar's width will be calculated
 
     self.drawerView.barDetail.title = @"One";
     self.drawerView.barDetail.color = [UIColor blueColor];

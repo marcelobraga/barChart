@@ -126,6 +126,7 @@
     if (self.fontSize == 0) {
         self.fontSize = 8;
     }
+    
     UILabel * labelMax = [UILabel new];
     [labelMax setFont:[UIFont systemFontOfSize:self.fontSize]];
     labelMax.textColor = self.lineColor;
@@ -179,9 +180,15 @@
     int originX = frameLineTop.origin.x + 10;
     int widthBar = limiteHorizontalView.frame.size.width / arrayBar.count;
     
+    if (self.barSize != 0) {
+        widthBar = self.barSize;
+    }
+    
     int index = 0;
     for (BarDetail * barDetail in arrayBar) {
 
+        
+        
         double heightBar = barDetail.value * heightDefinition;
         double heightSubBar = 0;
         if (barDetail.subValue != 0) {

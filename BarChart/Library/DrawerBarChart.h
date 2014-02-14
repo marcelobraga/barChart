@@ -39,6 +39,7 @@
 @property (nonatomic, assign) BOOL abortRotate;
 @property (nonatomic, assign) NSString * title;
 @property (nonatomic, assign) UIColor * masterColor;
+@property (nonatomic, assign) int barSize;
 @property(assign,nonatomic) id<DrawerBarChartDelegate>delegate;
 
 -(void) drawChart;

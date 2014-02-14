@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9C41F37B188D4D1700EB84D1 /* BarDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C41F37A188D4D1700EB84D1 /* BarDetail.m */; };
-		9CC4FE031889AA9A008B5CD0 /* DrawerBarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC4FE021889AA9A008B5CD0 /* DrawerBarChart.m */; };
+		9CCAAE6118AE568A0034F4C4 /* DrawerBarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CCAAE5D18AE568A0034F4C4 /* DrawerBarChart.m */; };
+		9CCAAE6218AE568A0034F4C4 /* BarDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CCAAE6018AE568A0034F4C4 /* BarDetail.m */; };
 		9CCC91A81889909700521410 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CCC91A71889909700521410 /* Foundation.framework */; };
 		9CCC91AA1889909700521410 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CCC91A91889909700521410 /* CoreGraphics.framework */; };
 		9CCC91AC1889909700521410 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CCC91AB1889909700521410 /* UIKit.framework */; };
@@ -36,10 +36,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		9C41F379188D4D1700EB84D1 /* BarDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BarDetail.h; path = BarChart/BarDetail.h; sourceTree = "<group>"; };
-		9C41F37A188D4D1700EB84D1 /* BarDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BarDetail.m; path = BarChart/BarDetail.m; sourceTree = "<group>"; };
-		9CC4FE011889AA9A008B5CD0 /* DrawerBarChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DrawerBarChart.h; path = BarChart/DrawerBarChart.h; sourceTree = "<group>"; };
-		9CC4FE021889AA9A008B5CD0 /* DrawerBarChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DrawerBarChart.m; path = BarChart/DrawerBarChart.m; sourceTree = "<group>"; };
+		9CCAAE5D18AE568A0034F4C4 /* DrawerBarChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DrawerBarChart.m; path = BarChart/Library/DrawerBarChart.m; sourceTree = "<group>"; };
+		9CCAAE5E18AE568A0034F4C4 /* DrawerBarChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DrawerBarChart.h; path = BarChart/Library/DrawerBarChart.h; sourceTree = "<group>"; };
+		9CCAAE5F18AE568A0034F4C4 /* BarDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BarDetail.h; path = BarChart/Library/BarDetail.h; sourceTree = "<group>"; };
+		9CCAAE6018AE568A0034F4C4 /* BarDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BarDetail.m; path = BarChart/Library/BarDetail.m; sourceTree = "<group>"; };
 		9CCC91A41889909700521410 /* BarChart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BarChart.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CCC91A71889909700521410 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9CCC91A91889909700521410 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -88,10 +88,10 @@
 		9C88AFC5188D76E9005441A8 /* BarChartLib */ = {
 			isa = PBXGroup;
 			children = (
-				9CC4FE011889AA9A008B5CD0 /* DrawerBarChart.h */,
-				9CC4FE021889AA9A008B5CD0 /* DrawerBarChart.m */,
-				9C41F379188D4D1700EB84D1 /* BarDetail.h */,
-				9C41F37A188D4D1700EB84D1 /* BarDetail.m */,
+				9CCAAE5D18AE568A0034F4C4 /* DrawerBarChart.m */,
+				9CCAAE5E18AE568A0034F4C4 /* DrawerBarChart.h */,
+				9CCAAE5F18AE568A0034F4C4 /* BarDetail.h */,
+				9CCAAE6018AE568A0034F4C4 /* BarDetail.m */,
 			);
 			name = BarChartLib;
 			sourceTree = "<group>";
@@ -267,11 +267,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C41F37B188D4D1700EB84D1 /* BarDetail.m in Sources */,
+				9CCAAE6218AE568A0034F4C4 /* BarDetail.m in Sources */,
 				9CCC91BE1889909700521410 /* ViewController.m in Sources */,
 				9CCC91B81889909700521410 /* AppDelegate.m in Sources */,
 				9CCC91B41889909700521410 /* main.m in Sources */,
-				9CC4FE031889AA9A008B5CD0 /* DrawerBarChart.m in Sources */,
+				9CCAAE6118AE568A0034F4C4 /* DrawerBarChart.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
