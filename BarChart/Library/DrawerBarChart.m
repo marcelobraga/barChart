@@ -8,7 +8,8 @@
 
 #import "DrawerBarChart.h"
 
-#define MARGIN_VERTICAL     30
+//#define MARGIN_VERTICAL     30
+#define MARGIN_VERTICAL     55
 #define MARGIN_HORIZONTAL   30
 
 @implementation DrawerBarChart
@@ -124,7 +125,8 @@
     
 
     if (self.fontSize == 0) {
-        self.fontSize = 8;
+        //self.fontSize = 8;
+        self.fontSize = 9;
     }
     
     UILabel * labelMax = [UILabel new];
@@ -225,6 +227,27 @@
         if (self.masterColor) {
             barDetail.color = self.masterColor;
         }
+        
+        //===== add a popup w/ the value of bar
+        
+        UIImageView *imgPopUp   = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"popup"]];
+        float barWidth          = frameBar.size.width;
+        float imgPadding        = 0;
+        
+        if(barWidth > 30) {
+            imgPadding = (barWidth-30);
+        }
+        
+        imgPopUp.frame          = CGRectMake(((imgPadding/2)+frameBar.origin.x),(frameBar.origin.y-30),(barWidth-imgPadding),25);
+        [self addSubview:imgPopUp];
+        UILabel *uilValue       = [[UILabel alloc] initWithFrame:CGRectMake((imgPopUp.frame.origin.x+5),(imgPopUp.frame.origin.y-2),imgPopUp.frame.size.width,imgPopUp.frame.size.height)];
+        uilValue.text           = [NSString stringWithFormat:@"%i",(int)barDetail.value];
+        uilValue.textColor      = [UIColor whiteColor];
+        uilValue.font           = [UIFont fontWithName:@"HelveticaNeue" size:13];
+        [self addSubview:uilValue];
+        
+        //=====
+        
         if (self.showGradient) {
             CAGradientLayer *gradient = [CAGradientLayer layer];
             gradient.frame = bar.bounds;
@@ -297,7 +320,8 @@
         [labelTitle setFont:[UIFont boldSystemFontOfSize:self.fontSize]];
         if (self.rotate45Degress) {
             [labelTitle setTransform:CGAffineTransformMakeRotation(-M_PI_4)];
-            [labelTitle setTextAlignment:NSTextAlignmentRight];
+            //[labelTitle setTextAlignment:NSTextAlignmentRight];
+            [labelTitle setTextAlignment:NSTextAlignmentLeft];
         } else if (self.rotate90Degress) {
             [labelTitle setTransform:CGAffineTransformMakeRotation(-M_PI_2)];
             [labelTitle setTextAlignment:NSTextAlignmentRight];
@@ -305,10 +329,14 @@
             [labelTitle setTextAlignment:NSTextAlignmentCenter];
         }
         CGRect frameTitle = labelTitle.frame;
-        frameTitle.origin.x = originX;
-        frameTitle.origin.y = frameBar.origin.y + frameBar.size.height + 5   ;
-        frameTitle.origin.y += 5;
-        frameTitle.size.width = widthBar;
+        //frameTitle.origin.x = originX;
+        //frameTitle.origin.y = frameBar.origin.y + frameBar.size.height + 5   ;
+        //frameTitle.origin.y += 5;
+        //frameTitle.size.width = widthBar;
+        frameTitle.origin.x     = (originX-30);
+        frameTitle.origin.y     = (frameBar.origin.y+frameBar.size.height+10);
+        frameTitle.size.width   = 140;
+
         if (self.abortRotate) {
             frameTitle.size.height = 25;
         } else if (self.rotate90Degress) {
