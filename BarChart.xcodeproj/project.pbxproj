@@ -88,8 +88,8 @@
 		9C88AFC5188D76E9005441A8 /* BarChartLib */ = {
 			isa = PBXGroup;
 			children = (
-				9CCAAE5D18AE568A0034F4C4 /* DrawerBarChart.m */,
 				9CCAAE5E18AE568A0034F4C4 /* DrawerBarChart.h */,
+				9CCAAE5D18AE568A0034F4C4 /* DrawerBarChart.m */,
 				9CCAAE5F18AE568A0034F4C4 /* BarDetail.h */,
 				9CCAAE6018AE568A0034F4C4 /* BarDetail.m */,
 			);

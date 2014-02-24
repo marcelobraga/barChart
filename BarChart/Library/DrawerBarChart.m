@@ -7,41 +7,33 @@
 //
 
 #import "DrawerBarChart.h"
+#import "BarDetail.h"
 
-//#define MARGIN_VERTICAL     30
 #define MARGIN_VERTICAL     55
 #define MARGIN_HORIZONTAL   30
 
 @implementation DrawerBarChart
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
+#pragma mark - Public methods
+
+-(void) clickBar : (UIButton *) btn {
+    if((self.delegate) && ([self.delegate respondsToSelector:@selector(didSelectBar: )])) {
+        [self.delegate didSelectBar:[arrayBar objectAtIndex:btn.tag]];
     }
-    return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+- (UIColor *)darkerColorForColor:(UIColor *)c
 {
-    // Drawing code
+    CGFloat r, g, b, a;
+    if ([c getRed:&r green:&g blue:&b alpha:&a])
+        return [UIColor colorWithRed:MAX(r - 0.9, 0.0)
+                               green:MAX(g - 0.9, 0.0)
+                                blue:MAX(b - 0.9, 0.0)
+                               alpha:a];
+    return nil;
 }
-*/
-
-
--(id) init {
-    self = [super init];
-    self.barDetail = [BarDetail new];
-    return self;
-}
-
 
 -(void) drawChart {
-
     if (!self.lineColor) {
         self.lineColor = [UIColor blackColor];
     }
@@ -49,7 +41,6 @@
     [self getMaxValue];
     [self getMinValue];
     
-
     UIView * limitVerticalView = [UIView new];
     UIView * limiteHorizontalView = [UIView new];
     CGRect frameVertical = limitVerticalView.frame;
@@ -70,7 +61,6 @@
     limiteHorizontalView.backgroundColor = self.lineColor;
     limiteHorizontalView.frame = frameHorizontal;
     
-    
     UIView * lineViewTop = [UIView new];
     UIView * lineViewTop2 = [UIView new];
     UIView * lineViewMiddle = [UIView new];
@@ -84,8 +74,6 @@
     lineViewTop.backgroundColor = [UIColor blackColor];
     lineViewTop.alpha = .1;
     lineViewTop.frame = frameLineTop;
-    
-    
     
     CGRect frameLineTop2 = lineViewTop2.frame;
     frameLineTop2.size.width = frameHorizontal.size.width;
@@ -104,7 +92,7 @@
     lineViewMiddle.backgroundColor = [UIColor blackColor];
     lineViewMiddle.alpha = .1;
     lineViewMiddle.frame = frameLineMiddle;
-
+    
     CGRect frameLineBottom = lineViewBottom.frame;
     frameLineBottom.size.width = frameHorizontal.size.width;
     frameLineBottom.origin.y = frameLineMiddle.origin.y +  (frameVertical.size.height / 4);
@@ -114,8 +102,6 @@
     lineViewBottom.alpha = .1;
     lineViewBottom.frame = frameLineBottom;
     
-    
-    
     [self addSubview:lineViewTop];
     [self addSubview:lineViewTop2];
     [self addSubview:lineViewMiddle];
@@ -123,9 +109,7 @@
     [self addSubview:limitVerticalView];
     [self addSubview:limiteHorizontalView];
     
-
     if (self.fontSize == 0) {
-        //self.fontSize = 8;
         self.fontSize = 9;
     }
     
@@ -140,7 +124,7 @@
     labelMax.frame = frameLabelMax;
     labelMax.text = [NSString stringWithFormat:@"%i", self.maxValue];
     [self addSubview:labelMax];
-
+    
     UILabel * labelMax2 = [UILabel new];
     [labelMax2 setFont:[UIFont systemFontOfSize:self.fontSize]];
     labelMax2.textColor = self.lineColor;
@@ -202,15 +186,9 @@
     int originX = frameLineTop.origin.x + 10;
     int widthBar = limiteHorizontalView.frame.size.width / arrayBar.count;
     
-    if (self.barSize != 0) {
-        widthBar = self.barSize;
-    }
-    
     int index = 0;
+    
     for (BarDetail * barDetail in arrayBar) {
-
-        
-        
         double heightBar = barDetail.value * heightDefinition;
         double heightSubBar = 0;
         if (barDetail.subValue != 0) {
@@ -222,15 +200,25 @@
         frameBar.origin.x = originX;
         frameBar.origin.y = frameHorizontal.origin.y - heightBar;
         frameBar.size.width = widthBar - 10;
+        
+        //===== reduce bar width
+        
+        if(frameBar.size.width > 40) {
+            frameBar.size.width = 30;
+        }
+        
+        //=====
+        
         frameBar.size.height = heightBar + 1;
         bar.frame = frameBar;
+        
         if (self.masterColor) {
             barDetail.color = self.masterColor;
         }
         
-        //===== add a popup w/ the value of bar
+        //===== add a popup image above a bar including its value
         
-        UIImageView *imgPopUp   = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"popup"]];
+        UIImageView *imgPopUp   = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"popup-item.png"]];
         float barWidth          = frameBar.size.width;
         float imgPadding        = 0;
         
@@ -240,7 +228,7 @@
         
         imgPopUp.frame          = CGRectMake(((imgPadding/2)+frameBar.origin.x),(frameBar.origin.y-30),(barWidth-imgPadding),25);
         [self addSubview:imgPopUp];
-        UILabel *uilValue       = [[UILabel alloc] initWithFrame:CGRectMake((imgPopUp.frame.origin.x+5),(imgPopUp.frame.origin.y-2),imgPopUp.frame.size.width,imgPopUp.frame.size.height)];
+        UILabel *uilValue       = [[UILabel alloc] initWithFrame:CGRectMake((imgPopUp.frame.origin.x+10),(imgPopUp.frame.origin.y-2),imgPopUp.frame.size.width,imgPopUp.frame.size.height)];
         uilValue.text           = [NSString stringWithFormat:@"%i",(int)barDetail.value];
         uilValue.textColor      = [UIColor whiteColor];
         uilValue.font           = [UIFont fontWithName:@"HelveticaNeue" size:13];
@@ -258,6 +246,7 @@
         }
         
         [self addSubview:bar];
+        
         if (self.showBorder) {
             bar.layer.borderWidth = 1;
             bar.layer.borderColor = self.lineColor.CGColor;
@@ -287,16 +276,15 @@
                 subBar.backgroundColor = barDetail.subColor;
             }
             
-            
             subBar.layer.borderWidth = 1;
             if (self.showBorder) {
                 subBar.layer.borderColor = self.lineColor.CGColor;
             } else {
                 subBar.layer.borderColor = [self lighterColorForColor:barDetail.subColor].CGColor;
             }
-
+            
             [self addSubview:subBar];
-
+            
             frameHorizontal.size.width += 5;
             limiteHorizontalView.frame = frameHorizontal;
             
@@ -305,9 +293,7 @@
             btn.tag = index;
             [btn addTarget:self action:@selector(clickBar:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:btn];
-            
         }
-        
         
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         btn.frame = frameBar;
@@ -318,16 +304,7 @@
         UILabel * labelTitle = [UILabel new];
         labelTitle.text = barDetail.title;
         [labelTitle setFont:[UIFont boldSystemFontOfSize:self.fontSize]];
-        if (self.rotate45Degress) {
-            [labelTitle setTransform:CGAffineTransformMakeRotation(-M_PI_4)];
-            //[labelTitle setTextAlignment:NSTextAlignmentRight];
-            [labelTitle setTextAlignment:NSTextAlignmentLeft];
-        } else if (self.rotate90Degress) {
-            [labelTitle setTransform:CGAffineTransformMakeRotation(-M_PI_2)];
-            [labelTitle setTextAlignment:NSTextAlignmentRight];
-        } else {
-            [labelTitle setTextAlignment:NSTextAlignmentCenter];
-        }
+        
         CGRect frameTitle = labelTitle.frame;
         //frameTitle.origin.x = originX;
         //frameTitle.origin.y = frameBar.origin.y + frameBar.size.height + 5   ;
@@ -335,8 +312,22 @@
         //frameTitle.size.width = widthBar;
         frameTitle.origin.x     = (originX-30);
         frameTitle.origin.y     = (frameBar.origin.y+frameBar.size.height+10);
-        frameTitle.size.width   = 140;
-
+        frameTitle.size.width   = [self getTextWidth:barDetail.title withFontName:@"HelveticaNeue" withFontSize:10];
+        
+        if (self.rotate45Degress) {
+            frameTitle.origin.x     = (originX-50);
+            frameTitle.size.width  *= 2;
+            [labelTitle setTransform:CGAffineTransformMakeRotation(-0.9)];
+            [labelTitle setTextAlignment:NSTextAlignmentLeft];
+        } else if (self.rotate90Degress) {
+            [labelTitle setTransform:CGAffineTransformMakeRotation(-M_PI_2)];
+            [labelTitle setTextAlignment:NSTextAlignmentRight];
+            frameTitle.origin.x = (originX-13);
+            frameTitle.origin.y = (frameBar.origin.y+frameBar.size.height+50);
+        } else {
+            [labelTitle setTextAlignment:NSTextAlignmentCenter];
+        }
+        
         if (self.abortRotate) {
             frameTitle.size.height = 25;
         } else if (self.rotate90Degress) {
@@ -344,15 +335,17 @@
         } else if (self.rotate45Degress) {
             frameTitle.size.height = 25;
         }
+        
         labelTitle.frame = frameTitle;
         labelTitle.backgroundColor = [UIColor clearColor];
+        
         if (barDetail.titleColor) {
             labelTitle.textColor = barDetail.titleColor;
         } else {
             labelTitle.textColor = self.lineColor;
         }
-        [self addSubview:labelTitle];
         
+        [self addSubview:labelTitle];
         
         originX += widthBar ;
         index++;
@@ -360,7 +353,7 @@
     
     if (self.title) {
         UILabel * labelTitle = [UILabel new];
-        [labelTitle setFont:[UIFont boldSystemFontOfSize:10]];
+        [labelTitle setFont:[UIFont boldSystemFontOfSize:15]];
         CGRect frameTitle = labelTitle.frame;
         frameTitle.origin.x = MARGIN_HORIZONTAL;
         frameTitle.origin.y = 0;
@@ -373,7 +366,6 @@
         labelTitle.backgroundColor = [UIColor clearColor];
         [self addSubview:labelTitle];
     }
-    
     
     [self bringSubviewToFront:lineViewTop];
     [self bringSubviewToFront:lineViewTop2];
@@ -399,29 +391,13 @@
         self.layer.borderWidth = 1;
     }
     
-    if (self.showShadow) {
+    if(self.showShadow) {
         self.layer.shadowColor    = [UIColor blackColor].CGColor;
         self.layer.shadowOffset   = CGSizeMake(0,2);
         self.layer.shadowOpacity  = 0.9;
         self.layer.shadowRadius   = 2;
     }
 }
-
-
--(void) initChart {
-    self.barDetail = [BarDetail new];
-    arrayBar = [NSMutableArray new];
-    self.showBorder = NO;
-    self.abortRotate = YES;
-    self.showGradient = YES;
-    self.showShadow = NO;
-}
-
--(void) setBar {
-    [arrayBar addObject:self.barDetail];
-    self.barDetail = [BarDetail new];
-}
-
 
 -(void) getMaxValue {
     int maxValue = 0;
@@ -433,42 +409,12 @@
             maxValue = barDetail.subValue;
         }
     }
-    self.maxValue = maxValue * 1.1;
     if (maxValue < 10) {
         self.maxValue = maxValue + 1;
     } else {
         self.maxValue = maxValue * 1.1;
     }
-    
 }
-
-
--(void) setAbortRotate:(BOOL)abortRotate {
-    if (abortRotate) {
-        _rotate45Degress = NO;
-        _rotate90Degress = NO;
-        _abortRotate = YES;
-    }
-}
-
-
--(void) setRotate45Degress:(BOOL)rotate45Degress {
-    if (rotate45Degress) {
-        _abortRotate = NO;
-        _rotate90Degress = NO;
-        _rotate45Degress = YES;
-    }
-}
-
-
--(void) setRotate90Degress:(BOOL)rotate90Degress {
-    if (rotate90Degress) {
-        _abortRotate = NO;
-        _rotate45Degress = NO;
-        _rotate90Degress = YES;
-    }
-}
-
 
 -(void) getMinValue {
     int minValue = 0;
@@ -479,30 +425,26 @@
             firstOperation = NO;
         }
     }
+    
     self.minValue = minValue;
 }
 
-
--(void) clickBar : (UIButton *) btn {
-
-    if((self.delegate) && ([self.delegate respondsToSelector:@selector(didSelectBar: )])) {
-        [self.delegate didSelectBar:[arrayBar objectAtIndex:btn.tag]];
-    }
+// calculate label's width according to font informed
+-(int)getTextWidth:(NSString *)text withFontName:(NSString *)fontName withFontSize:(float)fontSize {
+    NSString *label = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    int lblWidth    = [label boundingRectWithSize:CGSizeMake(285,4000) options:NSStringDrawingUsesFontLeading attributes:nil context:nil].size.width;
     
+    return lblWidth;
 }
 
-
-- (UIColor *)darkerColorForColor:(UIColor *)c
-{
-    CGFloat r, g, b, a;
-    if ([c getRed:&r green:&g blue:&b alpha:&a])
-        return [UIColor colorWithRed:MAX(r - 0.9, 0.0)
-                               green:MAX(g - 0.9, 0.0)
-                                blue:MAX(b - 0.9, 0.0)
-                               alpha:a];
-    return nil;
+-(void) initChart {
+    self.barDetail = [BarDetail new];
+    arrayBar = [NSMutableArray new];
+    self.showBorder = NO;
+    self.abortRotate = YES;
+    self.showGradient = YES;
+    self.showShadow = NO;
 }
-
 
 - (UIColor *)lighterColorForColor:(UIColor *)c
 {
@@ -514,4 +456,55 @@
                                alpha:a];
     return nil;
 }
+
+-(void)resetChart {
+    self.barDetail      = nil;
+    arrayBar            = nil;
+    self.showBorder     = NO;
+    self.abortRotate    = NO;
+    self.showGradient   = NO;
+    self.showShadow     = NO;
+    
+    for(UIView *view in self.subviews) {
+        [view removeFromSuperview];
+    }
+}
+
+-(void) setAbortRotate:(BOOL)abortRotate {
+    if (abortRotate) {
+        _rotate45Degress = NO;
+        _rotate90Degress = NO;
+        _abortRotate = YES;
+    }
+}
+
+-(void) setBar {
+    [arrayBar addObject:self.barDetail];
+    self.barDetail = [BarDetail new];
+}
+
+-(void) setRotate45Degress:(BOOL)rotate45Degress {
+    if (rotate45Degress) {
+        _abortRotate = NO;
+        _rotate90Degress = NO;
+        _rotate45Degress = YES;
+    }
+}
+
+-(void) setRotate90Degress:(BOOL)rotate90Degress {
+    if (rotate90Degress) {
+        _abortRotate = NO;
+        _rotate45Degress = NO;
+        _rotate90Degress = YES;
+    }
+}
+
+#pragma mark - Lifecycle methods
+
+-(id) init {
+    self = [super init];
+    self.barDetail = [BarDetail new];
+    return self;
+}
+
 @end
