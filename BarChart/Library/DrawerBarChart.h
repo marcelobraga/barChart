@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BarDetail.h"
 
-
+@class BarDetail;
 @class DrawerBarChart;
 
 @protocol DrawerBarChartDelegate <NSObject>
@@ -19,8 +18,6 @@
 -(void)didSelectBar : (BarDetail *) barSelected;
 
 @end
-
-
 
 @interface DrawerBarChart : UIView {
     NSMutableArray * arrayBar;
@@ -39,12 +36,11 @@
 @property (nonatomic, assign) BOOL abortRotate;
 @property (nonatomic, assign) NSString * title;
 @property (nonatomic, assign) UIColor * masterColor;
-@property (nonatomic, assign) int barSize;
 @property(assign,nonatomic) id<DrawerBarChartDelegate>delegate;
 
 -(void) drawChart;
 -(void) initChart;
+-(void)resetChart;
 -(void) setBar;
-
 
 @end
